@@ -1,0 +1,26 @@
+name: tests
+  # run lint flake8 and run tests project
+on: [push]
+jobs:
+  build:
+    runs-on: macos-12
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+      - name: install dependecies
+        run: |
+          pip install poetry
+          make install
+      - name: run linter
+        run: |
+          make lint
+      - name: run tests
+        run: |
+          make test
+      - name: Code Climate Coverage Action
+        uses: paambaati/codeclimate-action@v3.0.0
+        env:
+          CC_TEST_REPORTER_ID:  c919cf47b3f2cece149dcfec937dc9054be0986df71ab236c1d38d076788f330
+        with:
+          coverageCommand: make coverage-xml
+          debug: true
