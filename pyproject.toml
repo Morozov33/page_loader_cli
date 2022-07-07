@@ -6,8 +6,8 @@ authors = ["Dmitrii Morozov <33morozov@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
-requests = { git = "https://github.com/psf/requests.git"}
-requests-mock = { git = "https://github.com/jamielennox/requests-mock"}
+requests = "^2.28.1"
+requests-mock = "^1.9.3"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^3.8.3"
@@ -17,3 +17,6 @@ pytest-cov = "^3.0.0"
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+page-loader = "page_loader.scripts.script_page_loader:main"
