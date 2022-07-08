@@ -10,7 +10,7 @@ jobs:
       - name: install dependecies
         run: |
           pip install poetry
-          make install
+          poetry install
       - name: run linter
         run: |
           make lint
