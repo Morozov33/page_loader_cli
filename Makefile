@@ -6,7 +6,7 @@ package-install: #install package
 	python3 -m pip install --user dist/*.whl
 
 lint: #linter for code
-	poetry run flake8 page_loader tests
+	poetry run flake8 --ignore=F401 page_loader tests
 
 test-package: #test package without install
 	poetry run python3 -m page_loader.scripts.script_page_loader
