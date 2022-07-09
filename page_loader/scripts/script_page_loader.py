@@ -3,7 +3,7 @@
 '''Start main script for page-loader utilite'''
 
 import argparse
-from page_loaded.load import download
+from page_loader.load import download
 
 
 def main():
