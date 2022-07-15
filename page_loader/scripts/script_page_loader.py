@@ -3,6 +3,7 @@
 '''Start main script for page-loader utilite'''
 
 import argparse
+import logging
 from page_loader.load import download
 
 
@@ -15,7 +16,12 @@ def main():
                         help='''Path to download htlm-file.
                                 Default - current work directory''')
     args = parser.parse_args()
+    logging.basicConfig(level=logging.INFO,
+                        format='%(levelname)s: %(asctime)s %(message)s',
+                        datefmt='%d.%m.%y  %I:%M:%S')
+    logging.info('Started download page')
     print(download(args.download_url, args.path_to_file))
+    logging.info('Finished download page and local files')
 
 
 if __name__ == '__main__':
