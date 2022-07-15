@@ -100,17 +100,6 @@ def test_load_js(requests_mock):
         assert download_js == original_file_js
 
 
-def test_return_path(requests_mock):
-    requests_mock.get(original_url, text=original_page)
-    requests_mock.get(original_img_url, content=original_file_img)
-    requests_mock.get(original_css_url, text=original_file_css)
-    requests_mock.get(original_js_url, text=original_file_js)
-    with tempfile.TemporaryDirectory() as tmpdir:
-        os.chdir(tmpdir)
-        tmp_file_path = os.path.join(os.getcwd(), test_page_name)
-        assert download(original_url) == tmp_file_path
-
-
 def test_files_name(requests_mock):
     requests_mock.get(original_url, text=original_page)
     requests_mock.get(original_img_url, content=original_file_img)
