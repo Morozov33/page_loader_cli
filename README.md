@@ -13,3 +13,4 @@ Project is console utility page-loader, for download page from Web.
 [![asciicast](https://asciinema.org/a/5iyQ3qXY9yZX4P6M1WD4Dw4mZ.svg)](https://asciinema.org/a/5iyQ3qXY9yZX4P6M1WD4Dw4mZ)
 [![asciicast](https://asciinema.org/a/PAQps9Db3ZHfRErdDO9EuiBdQ.svg)](https://asciinema.org/a/PAQps9Db3ZHfRErdDO9EuiBdQ)
 [![asciicast](https://asciinema.org/a/YVjrbDdFmD5pGR55rplMiD99B.svg)](https://asciinema.org/a/YVjrbDdFmD5pGR55rplMiD99B)
+[![asciicast](https://asciinema.org/a/ZXrJcnUqle2CcMxlIj67BCNux.svg)](https://asciinema.org/a/ZXrJcnUqle2CcMxlIj67BCNux)
