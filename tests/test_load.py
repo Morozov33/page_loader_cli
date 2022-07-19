@@ -1,7 +1,7 @@
 import tempfile
 import os
+import pytest
 from page_loader.load import download
-from bs4 import BeautifulSoup
 
 
 original_page_name = 'original_page.html'
@@ -27,6 +27,8 @@ test_file_js_name = 'ru-hexlet-io-packs-js-runtime.js'
 test_files_names = sorted([test_file_img_name, test_file_css_name,
                            test_file_js_name, test_page_name])
 test_page_path = os.path.join('.', 'tests', 'fixtures', test_page_name)
+
+invalid_path = os.path.join(os.getcwd(), 'non_existen_dir')
 
 
 with open(test_page_path, 'r') as r:
@@ -128,3 +130,114 @@ def test_load_html(requests_mock):
         with open(test_page_name, 'r') as f:
             download_html = f.read()
         assert download_html == original_page
+
+
+def test_invalid_url_page(requests_mock):
+    requests_mock.get(original_url, status_code=404)
+    requests_mock.get(original_img_url, content=original_file_img)
+    requests_mock.get(original_css_url, text=original_file_css)
+    requests_mock.get(original_js_url, text=original_file_js)
+    with tempfile.TemporaryDirectory() as tmpdir:
+        os.chdir(tmpdir)
+        with pytest.raises(Exception, match='404'):
+            download(original_url)
+
+
+def test_invalid_url_img(requests_mock):
+    requests_mock.get(original_url, text=original_page)
+    requests_mock.get(original_img_url, status_code=404)
+    requests_mock.get(original_css_url, text=original_file_css)
+    requests_mock.get(original_js_url, text=original_file_js)
+    with tempfile.TemporaryDirectory() as tmpdir:
+        os.chdir(tmpdir)
+        with pytest.raises(Exception, match='404'):
+            download(original_url)
+
+
+def test_invalid_url_css(requests_mock):
+    requests_mock.get(original_url, text=original_page)
+    requests_mock.get(original_img_url, content=original_file_img)
+    requests_mock.get(original_css_url, status_code=404)
+    requests_mock.get(original_js_url, text=original_file_js)
+    with tempfile.TemporaryDirectory() as tmpdir:
+        os.chdir(tmpdir)
+        with pytest.raises(Exception, match='404'):
+            download(original_url)
+
+
+def test_invalid_url_js(requests_mock):
+    requests_mock.get(original_url, text=original_page)
+    requests_mock.get(original_img_url, content=original_file_img)
+    requests_mock.get(original_css_url, text=original_file_css)
+    requests_mock.get(original_js_url, status_code=404)
+    with tempfile.TemporaryDirectory() as tmpdir:
+        os.chdir(tmpdir)
+        with pytest.raises(Exception, match='404'):
+            download(original_url)
+
+
+def test_bad_connection_page(requests_mock):
+    requests_mock.get(original_url, status_code=525)
+    requests_mock.get(original_img_url, content=original_file_img)
+    requests_mock.get(original_css_url, text=original_file_css)
+    requests_mock.get(original_js_url, text=original_file_js)
+    with tempfile.TemporaryDirectory() as tmpdir:
+        os.chdir(tmpdir)
+        with pytest.raises(Exception, match='525'):
+            download(original_url)
+
+
+def test_bad_connection_img(requests_mock):
+    requests_mock.get(original_url, text=original_page)
+    requests_mock.get(original_img_url, status_code=525)
+    requests_mock.get(original_css_url, text=original_file_css)
+    requests_mock.get(original_js_url, text=original_file_js)
+    with tempfile.TemporaryDirectory() as tmpdir:
+        os.chdir(tmpdir)
+        with pytest.raises(Exception, match='525'):
+            download(original_url)
+
+
+def test_bad_connection_css(requests_mock):
+    requests_mock.get(original_url, text=original_page)
+    requests_mock.get(original_img_url, content=original_file_img)
+    requests_mock.get(original_css_url, status_code=525)
+    requests_mock.get(original_js_url, text=original_file_js)
+    with tempfile.TemporaryDirectory() as tmpdir:
+        os.chdir(tmpdir)
+        with pytest.raises(Exception, match='525'):
+            download(original_url)
+
+
+def test_bad_connection_js(requests_mock):
+    requests_mock.get(original_url, text=original_page)
+    requests_mock.get(original_img_url, content=original_file_img)
+    requests_mock.get(original_css_url, text=original_file_css)
+    requests_mock.get(original_js_url, status_code=525)
+    with tempfile.TemporaryDirectory() as tmpdir:
+        os.chdir(tmpdir)
+        with pytest.raises(Exception, match='525'):
+            download(original_url)
+
+
+def test_invalid_path(requests_mock):
+    requests_mock.get(original_url, text=original_page)
+    requests_mock.get(original_img_url, content=original_file_img)
+    requests_mock.get(original_css_url, text=original_file_css)
+    requests_mock.get(original_js_url, text=original_file_js)
+    with tempfile.TemporaryDirectory() as tmpdir:
+        os.chdir(tmpdir)
+        with pytest.raises(FileNotFoundError):
+            download(original_url, invalid_path)
+
+
+def test_permission(requests_mock):
+    requests_mock.get(original_url, text=original_page)
+    requests_mock.get(original_img_url, content=original_file_img)
+    requests_mock.get(original_css_url, text=original_file_css)
+    requests_mock.get(original_js_url, text=original_file_js)
+    with tempfile.TemporaryDirectory() as tmpdir:
+        os.chdir(tmpdir)
+        os.chmod(tmpdir, 000)
+        with pytest.raises(PermissionError):
+            download(original_url)
