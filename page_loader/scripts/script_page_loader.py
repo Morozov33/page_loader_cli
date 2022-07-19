@@ -23,7 +23,7 @@ def main():
     logging.info('Started download page')
     try:
         download(args.download_url, args.path_to_file)
-    except Exception: 
+    except Exception:
         sys.exit(1)
     else:
         logging.info('Finished download page and local files')
