@@ -4,6 +4,7 @@
 
 import argparse
 import logging
+import sys
 from page_loader.load import download
 
 
@@ -20,8 +21,13 @@ def main():
                         format='%(levelname)s: %(asctime)s %(message)s',
                         datefmt='%d.%m.%y  %I:%M:%S')
     logging.info('Started download page')
-    print(download(args.download_url, args.path_to_file))
-    logging.info('Finished download page and local files')
+    try:
+        download(args.download_url, args.path_to_file)
+    except Exception: 
+        sys.exit(1)
+    else:
+        logging.info('Finished download page and local files')
+        sys.exit()
 
 
 if __name__ == '__main__':
