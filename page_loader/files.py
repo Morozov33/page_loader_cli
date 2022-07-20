@@ -3,6 +3,7 @@ import requests
 import logging
 from page_loader.names import get_name
 from urllib.parse import urlparse, urljoin
+from progress.bar import Bar
 
 
 def get_file(soup, url_, type_):
@@ -12,10 +13,14 @@ def get_file(soup, url_, type_):
         type_link = 'src'
     type_file = 'wb' if type_ == 'img' else 'w'
     page_netloc = urlparse(url_).netloc
+    tags = [x for x in soup.find_all(type_)
+            if urlparse(x.get(type_link)).netloc in (page_netloc, '')]
+    bar = Bar(f"Downloading {type_} files:",
+              max=len(tags),
+              suffix='%(index)d/%(max)d')
     for tag in soup.find_all(type_):
-        link = tag.get(type_link)
-        if urlparse(link).netloc in (page_netloc, ''):
-            link = urljoin(url_, link)
+        if urlparse(tag.get(type_link)).netloc in (page_netloc, ''):
+            link = urljoin(url_, tag.get(type_link))
             name = get_name(link)
             path = os.path.join(os.getcwd(), name)
             with open(path, type_file) as file:
@@ -31,4 +36,5 @@ def get_file(soup, url_, type_):
                     elif type_ in ('link', 'script'):
                         file.write(download_file.text)
             tag[type_link] = os.path.join(os.path.basename(os.getcwd()), name)
-            logging.info(f"File {name} is download")
+            bar.next()
+    bar.finish()

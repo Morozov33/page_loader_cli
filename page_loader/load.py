@@ -16,7 +16,8 @@ def download(download_url, path='cwd'):
         os.mkdir(dir_path)
         os.chdir(dir_path)
     except FileExistsError:
-        logging.warning(f"Directory {dir_name} already exists")
+        logging.error(f"Directory {dir_name} already exists")
+        raise
     except FileNotFoundError:
         logging.error(f"Path {path} not found.")
         raise
