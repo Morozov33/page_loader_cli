@@ -11,6 +11,16 @@ def download(download_url, path='cwd'):
     if path == 'cwd':
         path = os.getcwd()
     try:
+        page_name = get_name(download_url)
+        page_load = requests.get(download_url)
+        page_load.raise_for_status()
+    except IOError as request_err:
+        logging.error(f"{request_err} to path {download_url}")
+        raise
+    else:
+        logging.info(f"Original page {download_url} is download")
+        soup = BeautifulSoup(page_load.text, 'html.parser')
+    try:
         dir_name = get_name(download_url, is_dir=True)
         dir_path = os.path.join(path, dir_name)
         os.mkdir(dir_path)
@@ -29,16 +39,6 @@ def download(download_url, path='cwd'):
         raise
     else:
         logging.info(f"Directory {dir_name} for files is created")
-    try:
-        page_name = get_name(download_url)
-        page_load = requests.get(download_url)
-        page_load.raise_for_status()
-    except IOError as request_err:
-        logging.error(f"{request_err} to path {download_url}")
-        raise
-    else:
-        logging.info(f"Original page {download_url} is download")
-        soup = BeautifulSoup(page_load.text, 'html.parser')
     try:
         get_file(soup, download_url, type_='img')
         get_file(soup, download_url, type_='link')
