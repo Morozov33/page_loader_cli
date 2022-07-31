@@ -50,3 +50,4 @@ def download(download_url, path='cwd'):
         with open(page_name, 'w') as page:
             page.write(soup.prettify())
             logging.info(f"HTML-file {page_name} is created to path: {path}")
+        return os.path.join(path, page_name)
