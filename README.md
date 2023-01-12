@@ -1,5 +1,4 @@
-Project is console utility page-loader, for download page from Web.
-
+It’s the console util, for downloading pages from the Web. Download html-code, images and js-scripts. Leveraged knowledge: Python 3.9, pytest, argparse, GitHub, poetry, pip, flake8, CodeClimate, request, request-mock, streaming download files, logging.
 
 ### Tests and linter status:
 [![tests](https://github.com/Morozov33/python-project-lvl3/actions/workflows/tests.yml/badge.svg)](https://github.com/Morozov33/python-project-lvl3/actions/workflows/tests.yml)
